@@ -9,14 +9,7 @@ class MyApp extends StatelessWidget{
 
     return MaterialApp(
       title: "Primera App",
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Bienvenidos"),
-        ),
-        body: Center(
-          child: RandomWords(),
-        ),
-      ),
+      home: RandomWords(),
     );
   }
 }
@@ -29,9 +22,29 @@ class RandomWords extends StatefulWidget{
 }
 class RandomWordsState extends State<RandomWords>{
   @override
+  final _suggestion = <WordPair>[];
   Widget build(BuildContext context) {
     // TODO: implement build
-    final wordPair = new WordPair.random();
-    return Text(wordPair.asPascalCase);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Bienvenidos"),
+      ),
+      body: _buildSuggestion(),
+    );
+  }
+  Widget _buildSuggestion(){
+    return ListView.builder(
+      itemBuilder: (context,i){
+        if(i>=_suggestion.length){
+          _suggestion.addAll(generateWordPairs().take(1));
+        }
+        return _buildRow(_suggestion[i]);
+      },
+    );
+  }
+  Widget _buildRow(WordPair pair){
+    return ListTile(
+      title: Text(pair.asPascalCase),
+    );
   }
 }
