@@ -23,6 +23,7 @@ class RandomWords extends StatefulWidget{
 class RandomWordsState extends State<RandomWords>{
   @override
   final _suggestion = <WordPair>[];
+  final _biggerfont = const TextStyle(fontSize: 18.0);
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
@@ -34,17 +35,21 @@ class RandomWordsState extends State<RandomWords>{
   }
   Widget _buildSuggestion(){
     return ListView.builder(
+      padding: const EdgeInsets.all(16.0),
       itemBuilder: (context,i){
+        if(i.isOdd)return Divider(color: Colors.black,);
         if(i>=_suggestion.length){
           _suggestion.addAll(generateWordPairs().take(1));
         }
-        return _buildRow(_suggestion[i]);
+        final index = i~/2;
+        return _buildRow(_suggestion[index]);
       },
     );
   }
   Widget _buildRow(WordPair pair){
     return ListTile(
-      title: Text(pair.asPascalCase),
+      title: Text(pair.asPascalCase,
+      style: _biggerfont,),
     );
   }
 }
