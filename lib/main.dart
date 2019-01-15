@@ -30,9 +30,44 @@ class RandomWordsState extends State<RandomWords>{
     return Scaffold(
       appBar: AppBar(
         title: Text("Bienvenidos"),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.list),
+              onPressed: _pushSaved
+          )
+        ],
       ),
       body: _buildSuggestion(),
     );
+  }
+  void _pushSaved ()
+  {
+    Navigator.of(context).push(MaterialPageRoute( builder: (context){
+      final tiles = _saved.map((pair){
+        return ListTile(
+          title: Text(
+            pair.asPascalCase,
+            style: _biggerfont,
+          ),
+
+        );
+      });
+
+      final divided = ListTile.divideTiles(
+        context: context,
+        tiles: tiles,
+      ).toList();
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Sugerencias"),
+        ),
+        body: ListView(
+          children: divided ,
+          padding: const EdgeInsets.all(16.0),
+        ),
+      );
+
+    }));
   }
   Widget _buildSuggestion(){
     return ListView.builder(
